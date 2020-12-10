@@ -10,7 +10,7 @@ export function createState(inParentComponent) {
         mailboxes : [ ],
         messages : [ ],
 
-        currentView : " welcome",
+        currentView : "welcome",
         currentMailbox: null,
         
         messageID : null,
@@ -161,7 +161,9 @@ export function createState(inParentComponent) {
 
             if(inEvent.target.id === "contactName" && inEvent.target.value.length > 16) { return; }
 
+            console.log(inEvent.target.id, " ", inEvent.target.value)
             this.setState({ [inEvent.target.id] : inEvent.target.value });
+
         }.bind(inParentComponent),
 
 
@@ -183,6 +185,43 @@ export function createState(inParentComponent) {
         }.bind(inParentComponent),
 
 
+        // updating a contact
+        updateContact : async function(): Promise<void> {
+
+            console.log("state.updateContact()", this.state.contactID);
+
+            const cl = this.state.contacts.slice(0);
+            this.state.showHidePleaseWait(true);
+            // update database
+            const contactsWorker: Contacts.Worker = new Contacts.Worker();
+            const updatedNumber = 
+                await contactsWorker.updateContact(this.state.contactID, 
+                    { 
+                        name: this.state.contactName,
+                        email: this.state.contactEmail
+                    });
+            console.log(updatedNumber, " updated.");
+            this.state.showHidePleaseWait(false);
+
+            // update the list on the page - might not need to do anything, already set state
+            let currentContact = cl.find((inElem) => inElem.id == this.state.contactID );
+            console.log(currentContact);
+            let index = cl.indexOf(currentContact);
+
+            console.log("this.contactName: ", this.state.contactName);
+            // update this contact
+            currentContact.name = this.state.contactName;
+            currentContact.email = this.state.contactEmail;
+
+            cl[index] = currentContact;
+            
+            this.setState({
+                contacts: cl
+            });
+
+        }.bind(inParentComponent),
+
+
         // delete a contact
         deleteContact : async function(): Promise<void> {
             console.log("state.deleteContact()", this.state.contactID);
@@ -196,19 +235,14 @@ export function createState(inParentComponent) {
             const cl = this.state.contacts.filter((inElement) => inElement._id != this.state.contactID);
 
             // update the list && clear the form (although can also populate with the next up)
-            this.setState({ contacts: cl, contactID: null, contactName: "", contactEmail: "" });
+            this.setState({ 
+                contacts: cl, 
+                contactID: null, 
+                contactName: "", 
+                contactEmail: "",
+                currentView: "welcome"
+            });
         }.bind(inParentComponent),
-
-
-
-
-        // NEW METHOD - update existing contact!
-        // updateContact : async function(): Promise<void> {
-        //     console.log("state.updateContact()", this.state.contactID,
-        //         this.state.contactName, this.state.contactEmail);
-
-        //     // find id,  change value, and then send to server
-        // }
 
 
 

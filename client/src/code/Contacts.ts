@@ -28,11 +28,11 @@ export class Worker {
         await axios.delete(`${config.serverAddress}/contacts/${inID}`);
     }
 
-    // update a contact -- NOT COMPLETE, 
-    public async updateContact(inID) : Promise<IContact> {
-        // THIS IS NOT COMPLETED
+
+    // update a contact
+    public async updateContact(inID: string, inContact: IContact) : Promise<Number> {
         const res: AxiosResponse = await axios.put(
-            `${config.serverAddress}/contacts/${inID}`
+            `${config.serverAddress}/contacts/${inID}`, inContact 
         );
         return res.data
     }

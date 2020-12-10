@@ -41,8 +41,28 @@ export class Worker {
                     }
                 }
             );
-        })
+        });
     }
+
+
+    // update existing contact
+    public updateContact(inID: string, inContact: IContact) : Promise<Number> {
+        console.log("updating contact...", inID, inContact);
+        return new Promise((inResolve, inReject) => {
+            this.db.update(
+                { _id : inID},
+                { $set: inContact}, {},
+            (inError, updatedDoc) => {
+                if(inError) {
+                    inReject(inError);
+                } else {
+                    inResolve(updatedDoc);
+                }
+            });
+        });
+    }
+
+
 
     // delete a contact
     public deleteContact(inID: string) : Promise<string> {

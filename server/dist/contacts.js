@@ -57,6 +57,21 @@ var Worker = /** @class */ (function () {
             });
         });
     };
+    // update existing contact
+    Worker.prototype.updateContact = function (inID, inContact) {
+        var _this = this;
+        console.log("updating contact...", inID, inContact);
+        return new Promise(function (inResolve, inReject) {
+            _this.db.update({ _id: inID }, { $set: inContact }, {}, function (inError, updatedDoc) {
+                if (inError) {
+                    inReject(inError);
+                }
+                else {
+                    inResolve(updatedDoc);
+                }
+            });
+        });
+    };
     // delete a contact
     Worker.prototype.deleteContact = function (inID) {
         var _this = this;

@@ -19,7 +19,7 @@ app.use("/",
 app.use(function(inRequest: Request, inResponse: Response, inNext: NextFunction) {
     inResponse.header("Access-Control-Allow-Origin", "*");
     inResponse.header("Access-Control-Allow-Methods",
-        "GET,POST,DELETE,OPTIONS"
+        "GET,POST,DELETE,OPTIONS,PUT"
     );
     inResponse.header("Access-Control-Allow-Headers",
         "Origin,X-Requested-With,Content-Type,Accept"
@@ -148,6 +148,23 @@ app.post("/contacts",
         }
     }
 );
+
+
+// update a contact
+app.put("/contacts/:id",
+    async(req: Request, res: Response) => {
+        console.log("PUT /contacts/", req.params.id, req.body);
+        try {
+            const contactsWorker: Contacts.Worker = new Contacts.Worker();
+            const updatedNum: Number = await contactsWorker.updateContact(req.params.id, req.body);
+            console.log("PUT Update successful");
+            res.json(updatedNum);
+        } catch (inError) {
+            console.log("PUT .contacts: Error", inError);
+            res.send("error in updating existing contact..");
+        }
+    }
+)
 
 
 // delete a contact

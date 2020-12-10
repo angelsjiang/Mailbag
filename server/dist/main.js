@@ -70,7 +70,7 @@ app.use("/", express_1.default.static(path_1.default.join(__dirname, "../../clie
 // dealing with & getting through CORS policy
 app.use(function (inRequest, inResponse, inNext) {
     inResponse.header("Access-Control-Allow-Origin", "*");
-    inResponse.header("Access-Control-Allow-Methods", "GET,POST,DELETE,OPTIONS");
+    inResponse.header("Access-Control-Allow-Methods", "GET,POST,DELETE,OPTIONS,PUT");
     inResponse.header("Access-Control-Allow-Headers", "Origin,X-Requested-With,Content-Type,Accept");
     inNext();
 });
@@ -258,9 +258,35 @@ app.post("/contacts", function (req, res) { return __awaiter(void 0, void 0, voi
         }
     });
 }); });
+// update a contact
+app.put("/contacts/:id", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var contactsWorker, updatedNum, inError_8;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                console.log("PUT /contacts/", req.params.id, req.body);
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                contactsWorker = new Contacts.Worker();
+                return [4 /*yield*/, contactsWorker.updateContact(req.params.id, req.body)];
+            case 2:
+                updatedNum = _a.sent();
+                console.log("PUT Update successful");
+                res.json(updatedNum);
+                return [3 /*break*/, 4];
+            case 3:
+                inError_8 = _a.sent();
+                console.log("PUT .contacts: Error", inError_8);
+                res.send("error in updating existing contact..");
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); });
 // delete a contact
 app.delete("/contacts/:id", function (inRequest, inResponse) { return __awaiter(void 0, void 0, void 0, function () {
-    var contactsWorker, inError_8;
+    var contactsWorker, inError_9;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -272,7 +298,7 @@ app.delete("/contacts/:id", function (inRequest, inResponse) { return __awaiter(
                 inResponse.send("Ok");
                 return [3 /*break*/, 3];
             case 2:
-                inError_8 = _a.sent();
+                inError_9 = _a.sent();
                 inResponse.send("error4");
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];

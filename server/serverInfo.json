@@ -1,10 +1,10 @@
 {
     "smtp" : {
         "host" : "smtp.mail.yahoo.com", "port" : 465,
-        "auth" : { "user" : "angeljiang0927@yahoo.com", "pass" : "qqmmeffcqtubjpoy" }
+        "auth" : { "user" : "someonesname@yahoo.com", "pass" : "xxx" }
     },
     "imap" : {
         "host" : "imap.mail.yahoo.com", "port" : 993,
-        "auth" : { "user" : "angeljiang0927@yahoo.com", "pass" : "qqmmeffcqtubjpoy" }
+        "auth" : { "user" : "someonesname@yahoo.com", "pass" : "xxx" }
     }
 }
